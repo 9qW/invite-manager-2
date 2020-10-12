@@ -1,0 +1,22 @@
+{
+  "name": "invite-manager",
+  "version": "1.0.0",
+  "description": "This bot is a simple Invite Manager. The data it invite activities. by ibidi",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "bot",
+    "invite",
+	"manager",
+	"invite-manager",
+    "discord",
+    "ibidi"
+  ],
+  "author": "ibidi",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^12.2.0"
+  }
+}
