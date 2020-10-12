@@ -1,9 +1,11 @@
 const { Collection, Client } = require("discord.js");
-const Database = require("../Helpers/Database");
+const Database = require("./Helpers/Database");
 const client = global.client;
 
+//#region Invite Manager
 const Invites = new Collection();
 
+//#region Load
 client.on("ready", () => {
     client.guilds.cache.forEach(guild => {
         guild.fetchInvites().then(_invites => {
@@ -21,6 +23,9 @@ client.on("inviteDelete", (invite) => {
     gi.delete(invite.code);
     Invites.set(invite.guild.id, gi);
 });
+//#endregion
+
+//#region Continuity
 
 client.on("guildCreate", (guild) => {
 	guild.fetchInvites().then(invites => {
@@ -28,6 +33,9 @@ client.on("guildCreate", (guild) => {
 	}).catch(e => {})
 });
 
+//#endregion
+
+//#region Counter
 client.on("guildMemberAdd", (member) => {
     //const gi = new Collection().concat(Invites.get(member.guild.id));
     const db = new Database("./Servers/" + member.guild.id, "Invites"), gi = (Invites.get(member.guild.id) || new Collection()).clone(), settings = new Database("./Servers/" + member.guild.id, "Settings").get("settings") || {};
@@ -110,7 +118,9 @@ client.on("guildMemberRemove", (member) => {
         channel.send(content);
     }
 });
+//#endregion
 
+//#region Reward
 global.onUpdateInvite = (guildMember, guild, total) => {
     if(!guildMember.manageable) return;
     const rewards = new Database("./Servers/" + guild, "Rewards").get("rewards") || [];
@@ -124,5 +134,7 @@ global.onUpdateInvite = (guildMember, guild, total) => {
         guildMember.roles.add(pos.Id);
     });
 }
+//#endregion
+//#endregion
 
 client.login(global.Settings.Token);
